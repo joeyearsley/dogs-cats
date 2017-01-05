@@ -34,5 +34,8 @@ save_config = lambda MODEL_NAME, mdl: db.child("test").child(MODEL_NAME) \
 										.child(DATE_RAN) \
 										.child(LAST_RUN+'_'+user_data["username"]) \
 										.set(mdl, user['idToken']) 
-save_output = 
 
+save_output = lambda logs: db.child("test").child(MODEL_NAME) \
+										.child(DATE_RAN) \
+										.child(LAST_RUN+'_'+user_data["username"]) \
+										.update(logs ,user['idToken'])
