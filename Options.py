@@ -1,18 +1,9 @@
-# Options
-
-#
-global mdl
-global MODEL_NAME
+''' loads data dependent variables from the dataset '''
+import Utils.dataset as data
+img_width, img_height, nb_train_samples, nb_validation_samples,\
+                             train_data_dir, validation_data_dir = data.load_dataset_vars('../data')
+''' Parameters to alter '''
 MODEL_NAME = "test"
-
-
-# Load these from dataset location.
-img_width, img_height = 150, 150
-train_data_dir = '../data/train'
-validation_data_dir = '../data/validation'
-nb_train_samples = 2000
-nb_validation_samples = 800
-
 nb_epoch = 50
 
 ckpt_kwargs = {
@@ -54,6 +45,7 @@ test_kwargs = {
 
 # One large json file to make it easy to save and reference.
 mdl = {
+    "logs": {"acc":0},
 	"nb_epoch": nb_epoch,
     "train_image_kwargs": train_image_kwargs,
     "test_image_kwargs": test_image_kwargs,

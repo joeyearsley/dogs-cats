@@ -4,10 +4,10 @@ from keras.callbacks import ModelCheckpoint, TensorBoard
 '''
     Load the model file you require, then compile with the options you want.
 '''
-
 from Models import sequential_simple_cnn as simple
 from Options import *
-from firebase import *
+from Utils.firebase import *
+from Utils.helpers import Metrics
 
 model = simple.get_model(img_width, img_height)
 
@@ -16,9 +16,9 @@ model.compile(loss='binary_crossentropy',
               metrics=['accuracy','fbeta_score','recall'])
 
 callbacks_list = [ModelCheckpoint(mdl["ckpt_filepath"], **mdl["ckpt_kwargs"]),
-                     TensorBoard(mdl["tensorboard_logpath"], **mdl["tensorboard_kwargs"])]
-
-# Saves the params before running the file
+                     TensorBoard(mdl["tensorboard_logpath"], **mdl["tensorboard_kwargs"]),
+                     Metrics()]
+# Saves the params
 save_config(MODEL_NAME, mdl)
 
 train_datagen = ImageDataGenerator(**mdl["train_image_kwargs"])
