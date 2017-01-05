@@ -5,7 +5,6 @@ import json
 '''
     Firebase authentication, for saving hyper params.
 '''
-MODEL_NAME = "test"
 
 config = {
     "apiKey": "AIzaSyB08LCdlCdj4uCqXqhpmbYtqC97OgtGo_8",
@@ -27,22 +26,16 @@ db = firebase.database()
 
 #For Database - constant
 DATE_RAN = datetime.date.today()
-
-try:
-    # Retrieve Last known run.
-    returned_list = [db.child("test").child(MODEL_NAME).child(DATE_RAN).shallow().get(user['idToken']).val()]
-    print(returned_list)
-    LAST_RUN = sorted([i.split(":")[1].split("_")[0] for i in returned_list])[-1]
-except TypeError:
-    LAST_RUN = 1
+# Retrieve Last known run.
+LAST_RUN = sorted(db.child("test").child(MODEL_NAME).child(DATE_RAN).shallow().get(user['idToken']).val())[-1]
 
 #Create global vars file.
 save_config = lambda MODEL_NAME, mdl: db.child("test").child(MODEL_NAME) \
 										.child(DATE_RAN) \
-                                                                                .child('RUN:'+str(LAST_RUN)+'_'+user_data["username"]) \
+										.child(LAST_RUN+'_'+user_data["username"]) \
 										.set(mdl, user['idToken']) 
 
 save_output = lambda logs: db.child("test").child(MODEL_NAME) \
 										.child(DATE_RAN) \
-                                                                                .child('RUN:'+str(LAST_RUN)+'_'+user_data["username"]) \
+										.child(LAST_RUN+'_'+user_data["username"]) \
 										.update(logs ,user['idToken'])
